@@ -1,0 +1,9 @@
+{
+  "sn": "00010001",
+  "type": "thinedge",
+  "name": "sz-thinedge",
+  "spec": "baicells-sd-wan-thinedge.hw.v01",
+  "sw": "thinedge.v01"
+}
+
+
