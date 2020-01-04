@@ -42,7 +42,7 @@ class Poll():
         while True:
             self.loop()
             break
-            time.sleep(10)
+            time.sleep(1)
         pass
 
 if __name__ == "__main__":
