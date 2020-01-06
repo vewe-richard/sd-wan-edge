@@ -1,9 +1,9 @@
 {
   "sn": "00010001",
   "type": "fatedge",
-  "name": "sz-thinedge",
-  "spec": "baicells-sd-wan-thinedge.hw.v01",
-  "sw": "thinedge.v01"
+  "name": "sz-fatedge",
+  "spec": "baicells-sd-wan-fatedge.hw.v01",
+  "sw": "fatedge.v01"
 }
 
 
