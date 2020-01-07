@@ -18,11 +18,12 @@ class Poll():
         return data
 
     def loop(self):
-        options = {"SN": "000000001", "CMD": "poll"}
+        options = {"SN": "00010001", "CMD": "poll"}
         self.parsexml(self.http_post("/north/", options).decode())
         pass
 
     def parsexml(self, resp):
+        print(resp)
         root = ET.fromstring(resp)
         for x in root:
             if x.tag == "version":
@@ -35,7 +36,12 @@ class Poll():
 
     def execute(self, command):
         print("try to execute: ", command)
-        subprocess.run(command.split())
+        items = command.split()
+        sp = subprocess.run(items, stderr = subprocess.PIPE)
+        if sp.returncode != 0:
+            options = {"SN": "00010001", "CMD": "actionresult", "actionID": items[2], "result": sp.stderr.decode()}
+            print(options)
+            self.http_post("/north/", options)
 
 
     def run(self):
