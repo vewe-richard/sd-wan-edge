@@ -26,5 +26,5 @@ if __name__ == "__main__":
         config = json.load(json_file)
         config["CMD"] = "query"
         config["wans"] = getwans()
-        print(Utils().http_post("/north/", config))
+        print(Utils.getInstance().http_post("/north/", config))
         print(config)
