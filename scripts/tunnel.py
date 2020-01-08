@@ -11,23 +11,24 @@ def returnresult(actionid, result):
 
 def server(wan):
     print(wan)
+    sp = subprocess.run(["ip", "tuntap", "del", "mode", "tun", "tun13"], stderr=subprocess.PIPE)
     sp = subprocess.run(["ip", "tuntap", "add", "mode", "tun", "tun13"], stderr=subprocess.PIPE)
     if sp.returncode != 0:
-        returnresult(actionID, sp.stderr.decode())
+        returnresult(actionID, "ip tuntap: " + sp.stderr.decode())
         return
     sp = subprocess.run(["ip", "addr", "add", "10.10.0.1/24", "dev", "tun13"], stderr=subprocess.PIPE)
     if sp.returncode != 0:
-        returnresult(actionID, sp.stderr.decode())
+        returnresult(actionID, "ip addr:" + sp.stderr.decode())
         return
     sp = subprocess.run(["/home/richard/work/diyvpn/simpletun", "-i", "tun13", "-s", "-p", "5555", "-d"], stderr=subprocess.PIPE)
     if sp.returncode != 0:
-        returnresult(actionID, sp.stderr.decode())
+        returnresult(actionID, "simpletun:" + sp.stderr.decode())
         return
-
 
 
 def client(wan, serverip):
     print(wan, serverip)
+    sp = subprocess.run(["ip", "tuntap", "del", "mode", "tun", "tun13"], stderr=subprocess.PIPE)
     sp = subprocess.run(["ip", "tuntap", "add", "mode", "tun", "tun13"], stderr=subprocess.PIPE)
     if sp.returncode != 0:
         returnresult(actionID, sp.stderr.decode())
