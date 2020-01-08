@@ -21,6 +21,10 @@ def server(wan):
     if sp.returncode != 0:
         returnresult(actionID, "ip addr:" + sp.stderr.decode())
         return
+    sp = subprocess.run(["ip", "link", "set", "tun13", "up"], stderr=subprocess.PIPE)
+    if sp.returncode != 0:
+        returnresult(actionID, sp.stderr.decode())
+        return
     sp = subprocess.run(["/home/richard/work/diyvpn/simpletun", "-i", "tun13", "-s", "-p", "5555", "-d"], stderr=subprocess.PIPE)
     if sp.returncode != 0:
         returnresult(actionID, "simpletun:" + sp.stderr.decode())
