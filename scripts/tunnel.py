@@ -1,6 +1,7 @@
 import sys
 from scripts.utils import Utils
 import subprocess
+import time
 
 actionId = 0
 
@@ -24,6 +25,8 @@ def server(wan):
     if sp.returncode != 0:
         returnresult(actionID, "simpletun:" + sp.stderr.decode())
         return
+    else:
+        sp.wait()
 
 
 def client(wan, serverip):
@@ -41,10 +44,24 @@ def client(wan, serverip):
     if sp.returncode != 0:
         returnresult(actionID, sp.stderr.decode())
         return
-    sp = subprocess.run(["/home/richard/work/diyvpn/simpletun", "-i", "tun13", "-c", serverip, "-p", "5555", "-d"], stderr=subprocess.PIPE)
+    sp = subprocess.run(["ip", "route", "add", "172.16.117.0/24", "via", "10.10.0.1"], stderr=subprocess.PIPE)
     if sp.returncode != 0:
         returnresult(actionID, sp.stderr.decode())
         return
+    for i in range(0, 15):
+        print("simpletun: " + str(i))
+        sp = subprocess.run(["/home/richard/work/diyvpn/simpletun", "-i", "tun13", "-c", serverip, "-p", "5555", "-d"], stderr=subprocess.PIPE)
+        if sp.returncode == 0:
+            print("connect success")
+            break
+        else:
+            print(sp.stderr.decode())
+        time.sleep(1)
+    if sp.returncode != 0:
+        returnresult(actionID, sp.stderr.decode())
+        return
+    else:
+        sp.wait()
 
 
 
